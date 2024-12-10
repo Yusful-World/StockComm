@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StockComm.Data;
+using StockComm.Mappers;
 
 namespace StockComm.Controllers
 {
@@ -16,17 +17,22 @@ namespace StockComm.Controllers
         [HttpGet]
         public IActionResult GetAllStocks()
         {
-            var stocks = _db.Stocks.ToList();
+            var listOfStocks = _db.Stocks.ToList().Select(stock => stock.ToStockDto());
+
             
-            return Ok(stocks);
+            return Ok(listOfStocks);
         }
 
         [HttpGet("{id}")]
         public IActionResult GetStockById([FromRoute] int id)
         {
             var stockFromDb = _db.Stocks.Find(id);
+            if (stockFromDb == null)
+            {
+                return NotFound();
+            }
 
-            return Ok(stockFromDb);
+            return Ok(stockFromDb.ToStockDto());
         }
     }
 }
