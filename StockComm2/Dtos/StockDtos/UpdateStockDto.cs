@@ -1,11 +1,7 @@
-﻿using StockComm.Models;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace StockComm.Dtos
+﻿namespace StockComm.Dtos.StockDtos
 {
-    public class StockDto
+    public class UpdateStockDto
     {
-        public int Id { get; set; }
         public string Symbol { get; set; } = string.Empty;
         public string CompanyName { get; set; } = string.Empty;
 
