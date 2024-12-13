@@ -35,10 +35,11 @@ namespace StockComm.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetStockById([FromRoute] int id)
         {
-            var stockFromDb = await _db.Stocks.FindAsync(id);
+            var stockFromDb = await _stockRepo.GetByIdAsync(id);
+
             if (stockFromDb == null)
             {
-                return NotFound();
+                return null;
             }
 
             return Ok(stockFromDb.ToStockDto());
@@ -50,8 +51,8 @@ namespace StockComm.Controllers
         {
             var createStock = stockRequestDto.ToCreateStockRequestDto();
 
-            await _db.Stocks.AddAsync(createStock);
-            await _db.SaveChangesAsync();
+            await _stockRepo.CreateAsync(createStock);
+
             return CreatedAtAction(nameof(GetStockById), new { id = createStock.Id }, createStock.ToStockDto());
         }
 
@@ -59,21 +60,10 @@ namespace StockComm.Controllers
         [Route("{id}")]
         public async Task<IActionResult> UpdateStock([FromRoute] int id, [FromBody] UpdateStockDto updateStockDto)
         {
-            var stockFromDb = await _db.Stocks.FirstOrDefaultAsync(stock => stock.Id == id);
-
-            if (stockFromDb == null)
-            {
-                return NotFound("This stock does not exist");
-            }
-
-            stockFromDb.Symbol = updateStockDto.Symbol;
-            stockFromDb.CompanyName = updateStockDto.CompanyName;
-            stockFromDb.Purchase = updateStockDto.Purchase;
-            stockFromDb.LastDividend = updateStockDto.LastDividend;
-            stockFromDb.MarketCapital = updateStockDto.MarketCapital;
-            stockFromDb.Industry = updateStockDto.Industry;
+            var stockFromDb = await _stockRepo.UpdateAsync(id, updateStockDto);
 
             await _db.SaveChangesAsync();
+            
             return Ok(stockFromDb.ToStockDto());
         }
 
@@ -81,14 +71,11 @@ namespace StockComm.Controllers
         [Route("{id}")]
         public async Task<IActionResult> DeleteStock([FromRoute] int id)
         {
-            var stockFromDb = await _db.Stocks.FirstOrDefaultAsync(s => s.Id == id);
+            var stockFromDb = await _stockRepo.DeleteAsync(id);
             if (stockFromDb == null)
             {
                 return NotFound();
             }
-
-            _db.Stocks.Remove(stockFromDb);
-            await _db.SaveChangesAsync();
 
             return Ok();
         }
