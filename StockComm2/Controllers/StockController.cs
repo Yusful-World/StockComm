@@ -53,22 +53,38 @@ namespace StockComm.Controllers
         [Route("{id}")]
         public IActionResult UpdateStock([FromRoute] int id, [FromBody] UpdateStockDto updateStockDto)
         {
-            var updateStock = _db.Stocks.FirstOrDefault(stock => stock.Id == id);
+            var stockFromDb = _db.Stocks.FirstOrDefault(stock => stock.Id == id);
 
-            if (updateStock == null)
+            if (stockFromDb == null)
             {
                 return NotFound("This stock does not exist");
             }
 
-            updateStock.Symbol = updateStockDto.Symbol;
-            updateStock.CompanyName = updateStockDto.CompanyName;
-            updateStock.Purchase = updateStockDto.Purchase;
-            updateStock.LastDividend = updateStockDto.LastDividend;
-            updateStock.MarketCapital = updateStockDto.MarketCapital;
-            updateStock.Industry = updateStockDto.Industry;
+            stockFromDb.Symbol = updateStockDto.Symbol;
+            stockFromDb.CompanyName = updateStockDto.CompanyName;
+            stockFromDb.Purchase = updateStockDto.Purchase;
+            stockFromDb.LastDividend = updateStockDto.LastDividend;
+            stockFromDb.MarketCapital = updateStockDto.MarketCapital;
+            stockFromDb.Industry = updateStockDto.Industry;
 
             _db.SaveChanges();
-            return Ok(updateStock.ToStockDto());
+            return Ok(stockFromDb.ToStockDto());
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public IActionResult DeleteStock([FromRoute] int id)
+        {
+            var stockFromDb = _db.Stocks.FirstOrDefault(s => s.Id == id);
+            if (stockFromDb == null)
+            {
+                return NotFound();
+            }
+
+            _db.Stocks.Remove(stockFromDb);
+            _db.SaveChanges();
+
+            return Ok();
         }
     }
 }
