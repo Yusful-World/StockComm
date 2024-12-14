@@ -1,4 +1,5 @@
-﻿using StockComm.Models;
+﻿using StockComm.Dtos.CommentDtos;
+using StockComm.Models;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StockComm.Dtos.StockDtos
@@ -14,5 +15,6 @@ namespace StockComm.Dtos.StockDtos
         public decimal LastDividend { get; set; }
         public long MarketCapital { get; set; }
         public string Industry { get; set; } = string.Empty;
+        public List<CommentDto>? Comments { get; set; }
     }
 }
