@@ -56,6 +56,11 @@ namespace StockComm.Repository
             return stockFromDb;
         }
 
+        public async Task<bool> StockExists(int id)
+        {
+            return await _db.Stocks.AnyAsync(s => s.Id == id);
+        }
+
         public async Task<Stock?> UpdateAsync(int id, UpdateStockDto updateStockDto)
         {
             var stockFromDb = await _db.Stocks.FirstOrDefaultAsync(s =>s.Id == id);
