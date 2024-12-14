@@ -41,7 +41,7 @@ namespace StockComm.Controllers
         }
 
         [HttpPost]
-        [DisplayName("Create New Customer")]
+        [DisplayName("Create New Stock")]
         public async Task<IActionResult> CreateStock([FromBody] CreateStockRequestDto stockRequestDto)
         {
             if (!ModelState.IsValid)
