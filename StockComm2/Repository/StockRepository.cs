@@ -64,7 +64,9 @@ namespace StockComm.Repository
                 }
             }
 
-            return await stockList.ToListAsync();
+            var skipNumber = (query.PageNumber - 1) * query.PageSize;
+
+            return await stockList.Skip(skipNumber).Take(query.PageSize).ToListAsync();
         }
 
         public async Task<Stock?> GetByIdAsync(int id)
