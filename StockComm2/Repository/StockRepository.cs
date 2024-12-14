@@ -50,7 +50,7 @@ namespace StockComm.Repository
             var stockFromDb = await _db.Stocks.Include(c => c.Comments).FirstOrDefaultAsync(s => s.Id == id);
             if (stockFromDb == null)
             {
-                throw new NullReferenceException("Stock with Id {id} does not exist");
+                return null;
             }
 
             return stockFromDb;
