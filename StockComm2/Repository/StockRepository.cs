@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using StockComm.Data;
 using StockComm.Dtos.StockDtos;
+using StockComm.Helpers;
 using StockComm.Models;
 using StockComm.Repository.IRepository;
 
@@ -40,9 +41,21 @@ namespace StockComm.Repository
             return stockFromDb;
         }
 
-        public async Task<List<Stock>> GetAllAsync()
+        public async Task<List<Stock>> GetAllAsync(QueryObject query)
         {
-            return await _db.Stocks.Include(c => c.Comments).ToListAsync();
+            var stockList = _db.Stocks.Include(c => c.Comments).AsQueryable();
+            
+            if (!string.IsNullOrWhiteSpace(query.CompanyName))
+            {
+                stockList = stockList.Where(s =>  s.CompanyName.Contains(query.CompanyName));
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.Symbol))
+            {
+                stockList = stockList.Where(s => s.Symbol.Contains(query.Symbol));
+            }
+
+            return await stockList.ToListAsync();
         }
 
         public async Task<Stock?> GetByIdAsync(int id)

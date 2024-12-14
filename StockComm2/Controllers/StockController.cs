@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Update.Internal;
 using StockComm.Data;
 using StockComm.Dtos.StockDtos;
+using StockComm.Helpers;
 using StockComm.Mappers;
 using StockComm.Repository.IRepository;
 using System.ComponentModel;
@@ -22,9 +23,9 @@ namespace StockComm.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllStocks()
+        public async Task<IActionResult> GetAllStocks([FromQuery] QueryObject query)
         {
-            var stocksFromDb = await _stockRepo.GetAllAsync();
+            var stocksFromDb = await _stockRepo.GetAllAsync(query);
             
             var listOfStocks = stocksFromDb.Select(stock => stock.ToStockDto());
             

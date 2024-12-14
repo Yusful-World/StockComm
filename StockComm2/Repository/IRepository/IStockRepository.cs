@@ -1,11 +1,12 @@
 ﻿using StockComm.Dtos.StockDtos;
+using StockComm.Helpers;
 using StockComm.Models;
 
 namespace StockComm.Repository.IRepository
 {
     public interface IStockRepository
     {
-        Task<List<Stock>> GetAllAsync();
+        Task<List<Stock>> GetAllAsync(QueryObject query);
         Task<Stock?> GetByIdAsync(int id);
 
         Task<Stock> CreateAsync(Stock stock); 
