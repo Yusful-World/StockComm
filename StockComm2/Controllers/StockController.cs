@@ -32,7 +32,7 @@ namespace StockComm.Controllers
             return Ok(listOfStocks);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetStockById([FromRoute] int id)
         {
             var stockFromDb = await _stockRepo.GetByIdAsync(id);
@@ -56,9 +56,11 @@ namespace StockComm.Controllers
         }
 
         [HttpPut]
-        [Route("{id}")]
+        [Route("{id:int}")]
         public async Task<IActionResult> UpdateStock([FromRoute] int id, [FromBody] UpdateStockDto updateStockDto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
             var stockFromDb = await _stockRepo.UpdateAsync(id, updateStockDto);
 
             await _db.SaveChangesAsync();
@@ -67,7 +69,7 @@ namespace StockComm.Controllers
         }
 
         [HttpDelete]
-        [Route("{id}")]
+        [Route("{id:int}")]
         public async Task<IActionResult> DeleteStock([FromRoute] int id)
         {
             var stockFromDb = await _stockRepo.DeleteAsync(id);
