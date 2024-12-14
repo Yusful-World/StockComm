@@ -18,6 +18,7 @@ namespace StockComm.Repository
 
         public async Task<Stock> CreateAsync(Stock newStock)
         {
+            
             await _db.Stocks.AddAsync(newStock);
             await _db.SaveChangesAsync();
 
@@ -47,6 +48,10 @@ namespace StockComm.Repository
         public async Task<Stock?> GetByIdAsync(int id)
         {
             var stockFromDb = await _db.Stocks.FindAsync(id);
+            if (stockFromDb == null)
+            {
+                throw new NullReferenceException("Stock with Id {id} does not exist");
+            }
 
             return stockFromDb;
         }

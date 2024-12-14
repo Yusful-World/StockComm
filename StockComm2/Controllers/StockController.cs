@@ -37,11 +37,6 @@ namespace StockComm.Controllers
         {
             var stockFromDb = await _stockRepo.GetByIdAsync(id);
 
-            if (stockFromDb == null)
-            {
-                return null;
-            }
-
             return Ok(stockFromDb.ToStockDto());
         }
 
@@ -49,8 +44,12 @@ namespace StockComm.Controllers
         [DisplayName("Create New Customer")]
         public async Task<IActionResult> CreateStock([FromBody] CreateStockRequestDto stockRequestDto)
         {
-            var createStock = stockRequestDto.ToCreateStockRequestDto();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
+            var createStock = stockRequestDto.ToCreateStockRequestDto();
             await _stockRepo.CreateAsync(createStock);
 
             return CreatedAtAction(nameof(GetStockById), new { id = createStock.Id }, createStock.ToStockDto());
@@ -72,10 +71,6 @@ namespace StockComm.Controllers
         public async Task<IActionResult> DeleteStock([FromRoute] int id)
         {
             var stockFromDb = await _stockRepo.DeleteAsync(id);
-            if (stockFromDb == null)
-            {
-                return NotFound();
-            }
 
             return Ok();
         }
