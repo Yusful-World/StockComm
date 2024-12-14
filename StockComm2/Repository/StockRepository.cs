@@ -5,6 +5,7 @@ using StockComm.Dtos.StockDtos;
 using StockComm.Helpers;
 using StockComm.Models;
 using StockComm.Repository.IRepository;
+using System.Linq;
 
 namespace StockComm.Repository
 {
@@ -53,6 +54,14 @@ namespace StockComm.Repository
             if (!string.IsNullOrWhiteSpace(query.Symbol))
             {
                 stockList = stockList.Where(s => s.Symbol.Contains(query.Symbol));
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.SortBy))
+            {
+                if (query.SortBy.Equals("CompanyName", StringComparison.OrdinalIgnoreCase))
+                {
+                    stockList = query.IsDescending ? stockList.OrderByDescending(s => s.CompanyName) : stockList.OrderBy(s => s.CompanyName);
+                }
             }
 
             return await stockList.ToListAsync();
