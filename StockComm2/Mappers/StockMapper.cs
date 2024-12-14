@@ -15,7 +15,8 @@ namespace StockComm.Mappers
                 Purchase = stockModel.Purchase,
                 LastDividend = stockModel.LastDividend,
                 Industry = stockModel.Industry,
-                MarketCapital = stockModel.MarketCapital
+                MarketCapital = stockModel.MarketCapital,
+                Comments = stockModel.Comments.Select(c => c.ToCommentDto()).ToList()
             };
         }
 

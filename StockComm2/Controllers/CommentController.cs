@@ -23,5 +23,18 @@ namespace StockComm.Controllers
 
             return Ok(listOfComments);
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetCommentById([FromBody] int id)
+        {
+            var commentFromDb = await _commentRepo.GetByIdAsync(id);
+
+            if (commentFromDb == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(commentFromDb.ToCommentDto());
+        }
     }
 }

@@ -42,12 +42,12 @@ namespace StockComm.Repository
 
         public async Task<List<Stock>> GetAllAsync()
         {
-            return await _db.Stocks.ToListAsync();
+            return await _db.Stocks.Include(c => c.Comments).ToListAsync();
         }
 
         public async Task<Stock?> GetByIdAsync(int id)
         {
-            var stockFromDb = await _db.Stocks.FindAsync(id);
+            var stockFromDb = await _db.Stocks.Include(c => c.Comments).FirstOrDefaultAsync(s => s.Id == id);
             if (stockFromDb == null)
             {
                 throw new NullReferenceException("Stock with Id {id} does not exist");

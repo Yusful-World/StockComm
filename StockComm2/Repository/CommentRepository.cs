@@ -16,5 +16,10 @@ namespace StockComm.Repository
         {
             return await _db.Comments.ToListAsync();
         }
+
+        public async Task<Comment?> GetByIdAsync(int id)
+        {
+            return await _db.Comments.FindAsync(id);
+        }
     }
 }
