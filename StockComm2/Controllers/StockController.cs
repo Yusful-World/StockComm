@@ -75,6 +75,10 @@ namespace StockComm.Controllers
         {
             var stockFromDb = await _stockRepo.DeleteAsync(id);
 
+            if (stockFromDb == null)
+            {
+                return NotFound();
+            }
             return Ok();
         }
     }
