@@ -28,7 +28,7 @@ namespace StockComm.Controllers
                 }
                 var appUser = new AppUser()
                 {
-                    UserName = registerDto.UserName,
+                    UserName = registerDto.Username,
                     Email = registerDto.Email,
                 };
 

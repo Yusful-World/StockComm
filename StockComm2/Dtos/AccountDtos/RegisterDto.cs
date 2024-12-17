@@ -5,7 +5,7 @@ namespace StockComm.Dtos.AccountDtos
     public class RegisterDto
     {
         [Required]
-        public string UserName { get; set; }
+        public string Username { get; set; }
 
         [Required]
         [EmailAddress]
