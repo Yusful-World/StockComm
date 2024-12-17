@@ -6,6 +6,8 @@ using StockComm.Data;
 using StockComm.Models;
 using StockComm.Repository;
 using StockComm.Repository.IRepository;
+using StockComm.Services.IService;
+using StockComm.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +22,8 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectio
 
 builder.Services.AddScoped<IStockRepository, StockRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
   { options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore; }
 );
@@ -56,6 +60,7 @@ builder.Services.AddAuthentication(options =>
         )
     };
 });
+
 
 var app = builder.Build();
 
