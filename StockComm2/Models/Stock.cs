@@ -2,6 +2,7 @@
 
 namespace StockComm.Models
 {
+    [Table("Stocks")]
     public class Stock
     {
         public int Id { get; set; }
@@ -16,5 +17,7 @@ namespace StockComm.Models
         public long MarketCapital { get; set; }
         public string Industry { get; set; } = string.Empty; 
         public List<Comment> Comments { get; set; } = new List<Comment>();
+        public List<UserPortfolio> Portfolios { get; set; } = new List<UserPortfolio>();
+
     }
 }
