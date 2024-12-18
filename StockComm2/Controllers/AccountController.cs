@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using StockComm.Dtos.AccountDtos;
 using StockComm.Models;
 using System.Web.Http.Results;
+using Microsoft.EntityFrameworkCore;
 
 namespace StockComm.Controllers
 {
@@ -14,11 +15,39 @@ namespace StockComm.Controllers
         private readonly UserManager<AppUser> _userManager;
 
         private readonly ITokenService _tokenService;
+        private readonly SignInManager<AppUser> _signInManager;
 
-        public AccountController(UserManager<AppUser> userManager, ITokenService tokenService)
+        public AccountController(UserManager<AppUser> userManager, ITokenService tokenService, SignInManager<AppUser> signInManager)
         {
             _userManager = userManager;
             _tokenService = tokenService;
+            _signInManager = signInManager;
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> LoginUser(LoginDto loginDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == loginDto.Username.ToLower());
+            if (user == null)
+                return Unauthorized("Invalid User!");
+
+            var checkPassword = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
+
+            if (!checkPassword.Succeeded)
+                return Unauthorized("Invalid username/Password");
+
+            return Ok(
+                new CreatedUserDto()
+                {
+                    Username = user.UserName,
+                    Email = user.Email,
+                    Token = _tokenService.CreateToken(user)
+                }
+            );
+
         }
 
         [HttpPost("register")]
