@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Update.Internal;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using StockComm.Data;
 using StockComm.Dtos.StockDtos;
 using StockComm.Helpers;
@@ -23,6 +22,7 @@ namespace StockComm.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAllStocks([FromQuery] QueryObject query)
         {
             var stocksFromDb = await _stockRepo.GetAllAsync(query);
