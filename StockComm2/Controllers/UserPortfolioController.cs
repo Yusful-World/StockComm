@@ -57,7 +57,7 @@ namespace StockComm.Controllers
                 AppUserId = appUser.Id,
             };
 
-            await _userPortfolioRepo.CreateAsync(portfolioModel);
+            await _userPortfolioRepo.CreatePortfolioAsync(portfolioModel);
 
             if (portfolioModel == null)
             {
@@ -65,8 +65,32 @@ namespace StockComm.Controllers
             }
             else
             {
-                return Created();
+                return CreatedAtAction(nameof(GetUserPortfolio), new { id = portfolioModel.StockId}, "Portfolio was created successfully");
             }
+        }
+
+        [HttpDelete]
+        [Authorize]
+        public async Task<IActionResult> DeleteUserPortfolio(string companyName)
+        {
+            var username = User.GetUsername();
+            var appUser = await _userManager.FindByNameAsync(username);
+
+            var userPortfolio = await _userPortfolioRepo.GetUserPortfolio(appUser);
+
+            var filteredStock = userPortfolio.Where(p => p.CompanyName.ToLower() == companyName.ToLower());
+
+            if (!filteredStock.Any())
+            {
+                return NotFound("This stock not in your Portfolio");
+            }
+            else
+            {
+                await _userPortfolioRepo.DeletePortfolio(appUser, companyName);
+            }
+
+            return Ok();
+
         }
     }
 }

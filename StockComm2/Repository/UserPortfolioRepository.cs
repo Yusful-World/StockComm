@@ -14,12 +14,25 @@ namespace StockComm.Repository
             _db = db;
         }
 
-        public async Task<UserPortfolio> CreateAsync(UserPortfolio userPortfolio)
+        public async Task<UserPortfolio> CreatePortfolioAsync(UserPortfolio userPortfolio)
         {
             await _db.UserPortfolios.AddAsync(userPortfolio);
             await _db.SaveChangesAsync();
 
             return userPortfolio;
+        }
+
+        public async Task<UserPortfolio> DeletePortfolio(AppUser appUser, string companyName)
+        {
+            var portfolioModel = await _db.UserPortfolios.FirstOrDefaultAsync(p => p.AppUserId == appUser.Id && p.Stock.CompanyName.ToLower() == companyName.ToLower());
+
+            if (portfolioModel == null)
+                return null;
+
+            _db.UserPortfolios.Remove(portfolioModel);
+            await _db.SaveChangesAsync();
+
+            return portfolioModel;
         }
 
         public async Task<List<Stock>> GetUserPortfolio(AppUser user)

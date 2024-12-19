@@ -6,6 +6,8 @@ namespace StockComm.Repository.IRepository
     {
         Task<List<Stock>> GetUserPortfolio(AppUser user);
 
-        Task<UserPortfolio> CreateAsync (UserPortfolio userPortfolio);
+        Task<UserPortfolio> CreatePortfolioAsync (UserPortfolio userPortfolio);
+
+        Task<UserPortfolio> DeletePortfolio(AppUser appUser, string companyName);
     }
 }
