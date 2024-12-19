@@ -14,6 +14,14 @@ namespace StockComm.Repository
             _db = db;
         }
 
+        public async Task<UserPortfolio> CreateAsync(UserPortfolio userPortfolio)
+        {
+            await _db.UserPortfolios.AddAsync(userPortfolio);
+            await _db.SaveChangesAsync();
+
+            return userPortfolio;
+        }
+
         public async Task<List<Stock>> GetUserPortfolio(AppUser user)
         {
             return await _db.UserPortfolios.Where(u => u.AppUserId == user.Id)
