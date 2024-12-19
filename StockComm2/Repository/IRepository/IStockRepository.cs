@@ -9,6 +9,8 @@ namespace StockComm.Repository.IRepository
         Task<List<Stock>> GetAllAsync(QueryObject query);
         Task<Stock?> GetByIdAsync(int id);
 
+        Task<Stock?> GetByCompanyNameAsync(string conpanyName);
+
         Task<Stock> CreateAsync(Stock stock); 
 
         Task<Stock?> UpdateAsync(int id, UpdateStockDto updateStockDto);

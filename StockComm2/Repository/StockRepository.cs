@@ -69,6 +69,11 @@ namespace StockComm.Repository
             return await stockList.Skip(skipNumber).Take(query.PageSize).ToListAsync();
         }
 
+        public async Task<Stock?> GetByCompanyNameAsync(string conpanyName)
+        {
+            return await _db.Stocks.FirstOrDefaultAsync(n => n.CompanyName == conpanyName);
+        }
+
         public async Task<Stock?> GetByIdAsync(int id)
         {
             var stockFromDb = await _db.Stocks.Include(c => c.Comments).FirstOrDefaultAsync(s => s.Id == id);
