@@ -27,7 +27,7 @@ namespace StockComm.Controllers
         {
             var stocksFromDb = await _stockRepo.GetAllAsync(query);
             
-            var listOfStocks = stocksFromDb.Select(stock => stock.ToStockDto());
+            var listOfStocks = stocksFromDb.Select(stock => stock.ToStockDto()).ToList();
             
 
             return Ok(listOfStocks);
