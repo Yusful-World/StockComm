@@ -9,7 +9,7 @@ namespace StockComm.Dtos.StockDtos
         public string Symbol { get; set; } = string.Empty;
         
         [Required]
-        [MaxLength(15, ErrorMessage = "Company name be more than 15 characters")]
+        [MaxLength(30, ErrorMessage = "Company name be more than 30 characters")]
         public string CompanyName { get; set; } = string.Empty;
 
         [Required]
@@ -25,7 +25,7 @@ namespace StockComm.Dtos.StockDtos
         public long MarketCapital { get; set; }
 
         [Required]
-        [MaxLength(15, ErrorMessage ="Industry cannot be more than 15 characters.")]
+        [MaxLength(30, ErrorMessage ="Industry cannot be more than 30 characters.")]
         public string Industry { get; set; } = string.Empty;
     }
 }
