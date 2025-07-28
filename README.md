@@ -17,18 +17,6 @@
 - **SQL Server (MSSQL)**
 - **Redis (for caching or future use)**
 
-## Project Structure
-🗁️ Controllers│   
-├ AccountController.cs       # Handles Sign-In & Login
-│   ├ StockController.cs         # Handles Stock CRUD
-│   ├ CommentsController.cs      # Handles Comment CRUD
-│   └ UserPortfolioController.cs # Manages User Portfolios
-📁️ Repositories                   # Implements Repository Pattern
-📁️ DTOs                           # Data Transfer Objects
-📁️ Models                         # Database Models
-📁️ Helpers                        
-...
-
 ## Getting Started
 
 Follow these steps to run the project locally.
